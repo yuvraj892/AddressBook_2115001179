@@ -54,10 +54,14 @@ else
 }
 
 builder.Services.AddSingleton<JwtHelper>();
+builder.Services.AddSingleton<ResetTokenHelper>();
 builder.Services.AddScoped<IAddressBookRL, AddressBookRL>();
 builder.Services.AddScoped<IUserRL, UserRL>();
 builder.Services.AddScoped<IAddressBookBL, AddressBookBL>();
 builder.Services.AddScoped<IUserBL, UserBL>();
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SMTP"));
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<RedisCacheHelper>();
 
 //Connection string
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -77,6 +81,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration["Redis:ConnectionString"];
+});
+
 
 var app = builder.Build();
 
