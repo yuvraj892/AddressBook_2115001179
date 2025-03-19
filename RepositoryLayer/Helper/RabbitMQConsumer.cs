@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RepositoryLayer.Service;
-using Microsoft.AspNetCore.Connections;
 
 namespace RepositoryLayer.Helper
 {
