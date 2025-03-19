@@ -60,8 +60,10 @@ builder.Services.AddScoped<IUserRL, UserRL>();
 builder.Services.AddScoped<IAddressBookBL, AddressBookBL>();
 builder.Services.AddScoped<IUserBL, UserBL>();
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SMTP"));
-builder.Services.AddScoped<EmailService>();
+builder.Services.AddSingleton<EmailService>();
 builder.Services.AddScoped<RedisCacheHelper>();
+builder.Services.AddSingleton<RabbitMQProducer>();
+builder.Services.AddHostedService<RabbitMQConsumer>();
 
 //Connection string
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
